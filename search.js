@@ -1,6 +1,9 @@
 const searchSuggestion=()=> {
+  document.getElementById('search-result').style.display='block';
+  document.getElementById('single-lyrics').style.display='none';
   const inputText = document.getElementById('input-text').value;
   getSuggestion(inputText);
+  console.log('hit');
 }
 
 const getSuggestion = async input => {
@@ -27,11 +30,11 @@ const updateItem = data => {
       <div class="col-md-2">
         <img id="album-cover" src="${albumCover}" alt="">
       </div>
-      <div class="col-md-7">
+      <div class="col-md-8">
         <h3 class="lyrics-name">${albumName}</h3>
         <p class="author lead">Album by <span>${artistName}</span></p>
       </div>
-      <div class="col-md-3 text-md-right text-center">
+      <div class="col-md-2 text-md-right text-center">
         <button onclick="getLyrics('${albumName}','${artistName}')" class="btn btn-success">Get Lyrics</button>
       </div>
   </div>`;
@@ -41,7 +44,23 @@ const updateItem = data => {
 }
 
 const getLyrics=async (artist,title)=>{
+  document.getElementById('search-result').style.display='none';
+  document.getElementById('single-lyrics').style.display='block';
   const response=await fetch(`https://api.lyrics.ovh/v1/${title}/${artist}`);
-  const data=await response.json();
-  console.log(data);
+  const data=await response.json();  
+  let lyricsText="";
+  if(data.lyrics==undefined){
+    lyricsText="No lyrics found";
+  }else{
+    lyricsText=data.lyrics;
+  }
+  const singleLyrics=document.getElementById('single-lyrics');
+  singleLyrics.innerHTML="";
+  const showLyrics=document.createElement('div');
+  showLyrics.innerHTML=
+  `<h2 class="text-success mb-4">${title} - ${artist}</h2>
+  <pre id="lyric" class="text-white">${lyricsText}</pre>`
+  singleLyrics.appendChild(showLyrics);
+
 }
+
