@@ -2,8 +2,12 @@ const searchSuggestion=()=> {
   document.getElementById('search-result').style.display='block';
   document.getElementById('single-lyrics').style.display='none';
   const inputText = document.getElementById('input-text').value;
-  getSuggestion(inputText);
-  console.log('hit');
+  //--validation is not fully completed, next time will do it
+  if(inputText==="" || inputText==" "){
+    alert("Please insert your Text");
+  }else{
+    getSuggestion(inputText);
+  }
 }
 
 const getSuggestion = async input => {
@@ -11,11 +15,11 @@ const getSuggestion = async input => {
   const data = await response.json();
   let actualData = data.data;
   actualData = actualData.slice(0, 10);
-  updateItem(actualData);
+  updateSuggestionItem(actualData);
 }
 
 
-const updateItem = data => {  
+const updateSuggestionItem = data => {  
   const searchResult = document.getElementById('search-result');
   searchResult.innerHTML='';
   for (let i = 0; i < data.length; i++) {
@@ -48,6 +52,11 @@ const getLyrics=async (artist,title)=>{
   document.getElementById('single-lyrics').style.display='block';
   const response=await fetch(`https://api.lyrics.ovh/v1/${title}/${artist}`);
   const data=await response.json();  
+  updateLyrics(data,artist,title);
+}
+
+const updateLyrics=(data,artist,title)=>{
+  console.log("hit")
   let lyricsText="";
   if(data.lyrics==undefined){
     lyricsText="No lyrics found";
@@ -61,6 +70,4 @@ const getLyrics=async (artist,title)=>{
   `<h2 class="text-success mb-4">${title} - ${artist}</h2>
   <pre id="lyric" class="text-white">${lyricsText}</pre>`
   singleLyrics.appendChild(showLyrics);
-
 }
-
