@@ -56,7 +56,6 @@ const getLyrics=async (artist,title)=>{
 }
 
 const updateLyrics=(data,artist,title)=>{
-  console.log("hit")
   let lyricsText="";
   if(data.lyrics==undefined){
     lyricsText="No lyrics found";
