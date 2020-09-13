@@ -9,9 +9,12 @@ const searchSuggestion=()=> {
     getSuggestion(inputText);
   }
 }
+const suggestApi = {
+  url: "https://api.lyrics.ovh/suggest/"
+};
 
 const getSuggestion = async input => {
-  const response = await fetch(`https://api.lyrics.ovh/suggest/${input}`);
+  const response = await fetch(`${suggestApi.url}${input}`);
   const data = await response.json();
   let actualData = data.data;
   actualData = actualData.slice(0, 10);
@@ -27,6 +30,7 @@ const updateSuggestionItem = data => {
     const albumCover=item.album.cover_medium;
     const albumName=item.album.title;
     const artistName=item.artist.name;    
+    const title=item.title;
     const list = document.createElement('div');
     let test="test";
     list.innerHTML = `
@@ -39,7 +43,7 @@ const updateSuggestionItem = data => {
         <p class="author lead">Album by <span>${artistName}</span></p>
       </div>
       <div class="col-md-2 text-md-right text-center">
-        <button onclick="getLyrics('${albumName}','${artistName}')" class="btn btn-success">Get Lyrics</button>
+        <button onclick="getLyrics('${artistName}','${title}')" class="btn btn-success">Get Lyrics</button>
       </div>
   </div>`;
     searchResult.appendChild(list); 
@@ -47,16 +51,20 @@ const updateSuggestionItem = data => {
   
 }
 
+const lyricsApi={
+  url:"https://api.lyrics.ovh/v1/"
+}
+
 const getLyrics=async (artist,title)=>{
+  console.log(artist, title);
   document.getElementById('search-result').style.display='none';
   document.getElementById('single-lyrics').style.display='block';
-  const response=await fetch(`https://api.lyrics.ovh/v1/${title}/${artist}`);
+  const response=await fetch(`${lyricsApi.url}${artist}/${title}`);
   const data=await response.json();  
   updateLyrics(data,artist,title);
 }
 
 const updateLyrics=(data,artist,title)=>{
-  console.log("hit")
   let lyricsText="";
   if(data.lyrics==undefined){
     lyricsText="No lyrics found";
