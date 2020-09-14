@@ -7,8 +7,9 @@ const searchSuggestion=()=> {
     alert("Please insert your Text");
   }else{
     getSuggestion(inputText);
-  }
+  } 
 }
+
 const suggestApi = {
   url: "https://api.lyrics.ovh/suggest/"
 };
@@ -29,7 +30,17 @@ const updateSuggestionItem = data => {
     const item = data[i];
     const albumCover=item.album.cover_medium;
     const albumName=item.album.title;
-    const artistName=item.artist.name;    
+    let artistName=item.artist.name;
+    
+    if(artistName.includes("'")){
+      const splitText=artistName.split("'");
+      let fullText="";
+      for (let i = 0; i < splitText.length; i++) {
+        const text = splitText[i];
+        fullText=fullText+text;        
+      }
+      artistName=fullText;
+    }  
     const title=item.title;
     const list = document.createElement('div');
     let test="test";
@@ -43,7 +54,10 @@ const updateSuggestionItem = data => {
         <p class="author lead">Album by <span>${artistName}</span></p>
       </div>
       <div class="col-md-2 text-md-right text-center">
-        <button onclick="getLyrics('${artistName}','${title}')" class="btn btn-success">Get Lyrics</button>
+      <button onclick="getLyrics('${artistName}','${title}')" class="btn btn-success">Get Lyrics</button> 
+
+      <!--   <button onclick="getLyrics('Guns N\' Roses')" class="btn btn-success">Get Lyrics</button>  -->
+
       </div>
   </div>`;
     searchResult.appendChild(list); 
