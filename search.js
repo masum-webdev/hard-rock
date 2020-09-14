@@ -42,7 +42,7 @@ const updateSuggestionItem = data => {
       artistNameModified=fullText;
     }  
 
-     // artist name modified for single quote problem
+     // title name modified for single quote problem
     let title=item.title;
     if(title.includes("'")){
       const splitText=title.split("'");
