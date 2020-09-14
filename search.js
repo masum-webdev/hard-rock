@@ -30,6 +30,7 @@ const updateSuggestionItem = data => {
     const albumCover=item.album.cover_medium;
     const albumName=item.album.title;
     const artistNameActual=item.artist.name;
+    // artist name modified for single quote problem
     let artistNameModified=artistNameActual;
     if(artistNameActual.includes("'")){
       const splitText=artistNameActual.split("'");
@@ -40,7 +41,18 @@ const updateSuggestionItem = data => {
       }
       artistNameModified=fullText;
     }  
-    const title=item.title;
+
+     // artist name modified for single quote problem
+    let title=item.title;
+    if(title.includes("'")){
+      const splitText=title.split("'");
+      let fullText="";
+      for (let i = 0; i < splitText.length; i++) {
+        const text = splitText[i];
+        fullText=fullText+text;        
+      }
+      title=fullText;
+    } 
     const list = document.createElement('div');
     let test="test";
     list.innerHTML = `
