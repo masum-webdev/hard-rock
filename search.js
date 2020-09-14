@@ -22,7 +22,6 @@ const getSuggestion = async input => {
   updateSuggestionItem(actualData);
 }
 
-
 const updateSuggestionItem = data => {  
   const searchResult = document.getElementById('search-result');
   searchResult.innerHTML='';
@@ -30,16 +29,16 @@ const updateSuggestionItem = data => {
     const item = data[i];
     const albumCover=item.album.cover_medium;
     const albumName=item.album.title;
-    let artistName=item.artist.name;
-    
-    if(artistName.includes("'")){
-      const splitText=artistName.split("'");
+    const artistNameActual=item.artist.name;
+    let artistNameModified=artistNameActual;
+    if(artistNameActual.includes("'")){
+      const splitText=artistNameActual.split("'");
       let fullText="";
       for (let i = 0; i < splitText.length; i++) {
         const text = splitText[i];
         fullText=fullText+text;        
       }
-      artistName=fullText;
+      artistNameModified=fullText;
     }  
     const title=item.title;
     const list = document.createElement('div');
@@ -51,12 +50,10 @@ const updateSuggestionItem = data => {
       </div>
       <div class="col-md-8">
         <h3 class="lyrics-name">${albumName}</h3>
-        <p class="author lead">Album by <span>${artistName}</span></p>
+        <p class="author lead">Album by <span>${artistNameActual}</span></p>
       </div>
       <div class="col-md-2 text-md-right text-center">
-      <button onclick="getLyrics('${artistName}','${title}')" class="btn btn-success">Get Lyrics</button> 
-
-      <!--   <button onclick="getLyrics('Guns N\' Roses')" class="btn btn-success">Get Lyrics</button>  -->
+      <button onclick="getLyrics('${artistNameModified}','${title}')" class="btn btn-success">Get Lyrics</button> 
 
       </div>
   </div>`;
